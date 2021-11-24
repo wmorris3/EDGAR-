@@ -1,0 +1,53 @@
+from selenium import webdriver as wd
+from bs4 import BeautifulSoup as bs
+
+def extract_from_html(url):
+
+    """
+    This function takes a URL as its input with the format r'url' and will return the text 
+    containted within that URL.
+    To print out the text once you've run the function, execute this code:
+    text = extract_from_html(r'your url goes here')
+    
+    for t in text:
+        print(t)
+    
+    be sure to run this code before executing the function:
+    from selenium import webdriver as wd
+    from bs4 import BeautifulSoup as bs
+    """
+    
+    driver = wd.Chrome()
+    driver.get(url)
+    
+    page_source = driver.page_source
+    soup = bs(page_source, 'html.parser')
+    
+    text_blocks = soup.find_all('span')
+    
+    driver.close()
+    
+    return text_blocks
+    
+    ----------------------------------------------------------------------
+    
+    def write_n_clean(url):
+    
+    text_list = extract_from_html(url)
+    
+    file_path = r'C:\Users\WilliamMorris\OneDrive - Kubrick Group\Python\html_text'
+    
+    f = open(file_path+'\html1.txt', "w")
+    
+    for text in text_list:
+        
+        cleaned_text = text.text
+        
+        try:                  # any odd characters will not end the code
+            f.write(cleaned_text)
+            f.write('\n')
+            
+        except:
+            continue
+            
+    f.close()
